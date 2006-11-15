@@ -6,7 +6,7 @@ use Module::CoreList;
 
 use vars qw( @ISA $VERSION );
 @ISA     = qw(Bot::BasicBot::Pluggable::Module);
-$VERSION = '0.01';
+$VERSION = '0.02';
 
 my $ident = qr/[A-Za-z_][A-Za-z_0-9]*/;
 
@@ -54,7 +54,7 @@ __END__
 
 =head1 NAME
 
-Bot::BasicBot::Pluggable::Module::CoreList - IRC frontend to Regexp::CoreList
+Bot::BasicBot::Pluggable::Module::CoreList - IRC frontend to Module::CoreList
 
 =head1 SYNOPSIS
 
@@ -69,9 +69,8 @@ over IRC.
 
 =head1 IRC USAGE
 
-If the regular expressions you want to assemble do not contain
-whitespace, separate the regexp elements with any number of space
-charaters:
+To learn about the presence or absence of a module in the Perl core,
+simply ask:
 
     corelist Test::More
 
