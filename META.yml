@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name: Bot-BasicBot-Pluggable-Module-CoreList
-version: 0.02
+version: 0.03
 author:
   - Philippe "BooK" Bruhat <book@cpan.org>
 abstract: IRC frontend to Module::CoreList
