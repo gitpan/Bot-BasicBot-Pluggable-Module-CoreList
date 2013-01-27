@@ -2,11 +2,11 @@ package Bot::BasicBot::Pluggable::Module::CoreList;
 
 use strict;
 use Bot::BasicBot::Pluggable::Module;
-use Module::CoreList;
+use Module::CoreList 2.18;
 
 use vars qw( @ISA $VERSION );
 @ISA     = qw(Bot::BasicBot::Pluggable::Module);
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 my $ident = qr/[A-Za-z_][A-Za-z_0-9]*/;
 my $cmds  = qr/find|search|release|date/;
@@ -48,19 +48,24 @@ sub told {
             . $where;
     }
     else {
-        my ( $release, $patchlevel, $date )
-            = ( Module::CoreList->first_release($module), '', '' );
-        if ($release) {
-            $patchlevel = $Module::CoreList::patchlevel{$release}
-                ? join( "/", @{ $Module::CoreList::patchlevel{$release} } )
-                : '';
-            $date  = $Module::CoreList::released{$release};
-        }
-        $reply = $release
-            ? "$module was first released with perl $release ("
-            . ( $patchlevel ? "patchlevel $patchlevel, " : '' )
-            . "released on $date)"
+        my $release = Module::CoreList->first_release($module);
+        my $removed = $Module::CoreList::VERSION >= 2.32
+            && Module::CoreList->removed_from($module);
+        my $deprecated = $Module::CoreList::VERSION >= 2.77
+            && Module::CoreList->deprecated_in($module);
+        no warnings 'uninitialized';
+        push my @reply, $release
+            ? "$module was first released with perl $release"
+            . " (released on $Module::CoreList::released{$release})"
             : "$module is not in the core";
+        push @reply, "deprecated in perl $deprecated"
+            . " (released on $Module::CoreList::released{$deprecated})"
+            if $deprecated;
+        push @reply, "removed from perl $removed"
+            . " (released on $Module::CoreList::released{$removed})"
+            if $removed;
+        push @reply, join " and ", splice @reply, -2 if @reply > 1;
+        $reply = join ', ', @reply;
     }
 
     return $reply;
@@ -104,7 +109,7 @@ The robot understand the following subcommands:
 =item * date
 
     < you> bot: corelist release Test::More
-    < bot> you: Test::More was first released with perl 5.7.3 (patchlevel perl/15039, released on 2002-03-05)
+    < bot> you: Test::More was first released with perl 5.7.3 (released on 2002-03-05)
 
 If no command is given, C<release> is the default.
 
@@ -124,7 +129,7 @@ the search:
 The search never returns more than 9 replies, to avoid flooding the channel:
 
     < you> bot: corelist find e
-    < bot> Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ... 
+    < bot> Found AnyDBM_File, AutoLoader, B::Assembler, B::Bytecode, B::Debug, B::Deparse, B::Disassembler, B::Showlex, B::Terse, ...
 
 =back
 
