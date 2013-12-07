@@ -4,7 +4,7 @@
       "Philippe \"BooK\" Bruhat <book@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
+   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -16,21 +16,21 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.38"
+            "Module::Build" : "0.40"
          }
       },
       "runtime" : {
          "requires" : {
             "Bot::BasicBot::Pluggable" : "0.5",
             "Module::CoreList" : "2.18",
-            "Test::More" : 0
+            "Test::More" : "0"
          }
       }
    },
    "provides" : {
       "Bot::BasicBot::Pluggable::Module::CoreList" : {
          "file" : "lib/Bot/BasicBot/Pluggable/Module/CoreList.pm",
-         "version" : "0.04"
+         "version" : "0.05"
       }
    },
    "release_status" : "stable",
@@ -39,5 +39,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.04"
+   "version" : "0.05"
 }
